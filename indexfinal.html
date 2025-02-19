@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro Finance</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: 'Courier New', Courier, monospace;
+            text-align: center;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .title {
+            background-color: #FF5E42;
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            font-size: 2em;
+        }
+        .nav {
+            margin-top: 20px;
+        }
+        .nav-btn {
+            background-color: #FF5E42;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .nav-btn:hover {
+            background-color: #E74C3C;
+        }
+        .form-container {
+            margin-top: 30px;
+            font-size: 1.2em;
+        }
+        input {
+            width: 50%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: none;
+            font-size: 1em;
+        }
+        .add-btn {
+            background-color: #28A745;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 1em;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .add-btn:hover {
+            background-color: #218838;
+        }
+        .reports-section {
+            display: none;
+        }
+
+        /* Modificăm aici pentru ca eticheta să fie în fața câmpului de input */
+        .amount-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .amount-container label {
+            margin-right: 10px; /* Pentru a pune puțin spațiu între etichetă și câmp */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">RetroFinance</h1>
+        <div class="nav">
+            <button class="nav-btn" id="homeBtn">Home</button>
+            <button class="nav-btn" id="reportsBtn">Reports</button>
+        </div>
+        <div class="form-container" id="addExpenseForm">
+            <h2>Add New Expense</h2>
+            
+            <!-- Descrierea cheltuielii -->
+            <label for="desc">Description:</label>
+            <input type="text" id="desc" placeholder="Enter description">
+            
+            <!-- Eticheta Amount ($) plasată în fața câmpului -->
+            <div class="amount-container">
+                <label for="amount">Amount ($):</label>
+                <input type="number" id="amount" placeholder="Enter amount">
+            </div>
+
+            <!-- Butonul pentru a adăuga cheltuiala -->
+            <button class="add-btn" id="addExpense">Add Expense</button>
+        </div>
+        <div class="reports-section" id="reportsSection">
+            <h2>Reports</h2>
+            <ul id="reportsList"></ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            console.log("JavaScript is running!");
+
+            // Selectează butoanele de navigare
+            let homeBtn = document.getElementById("homeBtn");
+            let reportsBtn = document.getElementById("reportsBtn");
+
+            // Array pentru a stoca cheltuielile
+            let expenses = [];
+
+            // Selectează elementele din formularul de adăugare a cheltuielilor
+            const expenseNameInput = document.getElementById("desc");
+            const expenseAmountInput = document.getElementById("amount");
+            const addExpenseBtn = document.getElementById("addExpense"); // Butonul verde
+            const reportsList = document.getElementById("reportsList");
+            const reportsSection = document.getElementById("reportsSection");
+            const addExpenseForm = document.getElementById("addExpenseForm");
+
+            // Adăugăm eveniment pentru butonul de "Add Expense" (green)
+            addExpenseBtn.addEventListener("click", function (event) {
+                console.log("Add Expense button clicked");  // Debugging pentru confirmare
+
+                event.preventDefault(); // Previne comportamentul implicit al formularului
+
+                const expenseName = expenseNameInput.value;
+                const expenseAmount = parseFloat(expenseAmountInput.value);
+
+                console.log("Expense Data:", expenseName, expenseAmount); // Debugging
+
+                if (expenseName && !isNaN(expenseAmount)) {
+                    // Adaugă cheltuiala în array
+                    expenses.push({ name: expenseName, amount: expenseAmount });
+
+                    // Curăță câmpurile formularului
+                    expenseNameInput.value = "";
+                    expenseAmountInput.value = "";
+
+                    alert("Cheltuială adăugată cu succes!");
+
+                    // Ascunde formularul și doar arată secțiunea de rapoarte
+                    addExpenseForm.style.display = "none"; // Ascunde formularul
+                    reportsSection.style.display = "block"; // Afișează secțiunea de rapoarte
+
+                    // Golește lista de rapoarte
+                    reportsList.innerHTML = "";
+
+                    // Găsește și adaugă toate cheltuielile la rapoarte
+                    expenses.forEach(function (expense) {
+                        const li = document.createElement("li");
+                        li.textContent = `${expense.name}: ${expense.amount} RON`;
+                        reportsList.appendChild(li);
+                    });
+                } else {
+                    alert("Te rog să completezi toate câmpurile corect!");
+                }
+            });
+
+            // Adăugăm eveniment pentru butonul de "Reports"
+            reportsBtn.addEventListener("click", function () {
+                console.log("Reports button clicked");
+
+                // Arată secțiunea de rapoarte
+                addExpenseForm.style.display = "none"; // Ascunde formularul
+                reportsSection.style.display = "block"; // Afișează secțiunea de rapoarte
+
+                // Golește lista de rapoarte
+                reportsList.innerHTML = "";
+
+                // Verifică dacă există cheltuieli și le adaugă în raport
+                if (expenses.length > 0) {
+                    expenses.forEach(function (expense) {
+                        const li = document.createElement("li");
+                        li.textContent = `${expense.name}: ${expense.amount} RON`;
+                        reportsList.appendChild(li);
+                    });
+                } else {
+                    reportsList.innerHTML = "<li>Nu există cheltuieli adăugate.</li>";
+                }
+            });
+
+            // Adăugăm eveniment pentru butonul de "Home"
+            homeBtn.addEventListener("click", function () {
+                console.log("Home button clicked");
+                addExpenseForm.style.display = "block"; // Afișează formularul
+                reportsSection.style.display = "none"; // Ascunde secțiunea de rapoarte
+            });
+        });
+    </script>
+</body>
+</html>
