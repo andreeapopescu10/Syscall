@@ -10,4 +10,8 @@ Language: English
 
 Project Name: Retro Finance Tracker
 
+Demo: https://youtu.be/z12IS0tX2TM?si=U1TPuo61F4eYNrHn
+
+Pitch: https://youtube.com/shorts/POWGQ7zLoqc?si=WKhSn8xhvwRUo5nK
+
 
