@@ -8,6 +8,6 @@ Technology:JavaScript, HTML, CSS
 
 Language: English
 
-Project Name: Retro Finance
+Project Name: Retro Finance Tracker
 
 
